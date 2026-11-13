@@ -1,0 +1,23 @@
+services:
+  express-app:
+    image: ernvbiz/express-app
+    container_name: express-app
+    ports:
+      - 8080:8080
+    networks:
+      - nat
+      
+  watchtower:
+    image: nickfedor/watchtower
+    container_name: watchtower
+    environment:
+      -  WATCHTOWER_POLL_INTERVAL=30 # Poll every 60 seconds
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: express-app
+    networks:
+      - nat
+
+networks:
+  nat:
+    name: express-app-nat
